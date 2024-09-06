@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transaction List</title>
+<!--  <link rel="stylesheet" th:href="@{abc.css}"  />-->
+</head>
+<style>
+  /* Basic reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body{
+    background-image: linear-gradient(to left, #16e7c8, #a3db8b, #e4c87c, #ffb699, #ffb2c5);}
+
+  body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #4CAF50;
+  }
+
+  /* Container for the forms and table */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Form styling */
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  form input[type="text"],
+  form input[type="date"],
+  form button {
+    padding: 10px;
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  form button:hover {
+    background-color: #45a049;
+  }
+
+  /* Table styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  table th,
+  table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  table th {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  /* Action buttons in table */
+  .action-buttons button {
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .action-buttons button:first-child {
+    background-color: #FFA500;
+    color: white;
+  }
+
+  .action-buttons button:last-child {
+    background-color: #FF6347;
+    color: white;
+  }
+
+  .action-buttons button:hover {
+    opacity: 0.8;
+  }
+
+  /* Edit form container */
+  #editTransactionFormContainer {
+    display: none;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+
+  #editTransactionFormContainer h2 {
+    margin-bottom: 15px;
+  }
+
+  #editTransactionFormContainer form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  #editTransactionFormContainer input[type="text"],
+  #editTransactionFormContainer input[type="date"],
+  #editTransactionFormContainer button {
+    padding: 10px;
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  #editTransactionFormContainer button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  #editTransactionFormContainer button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+
+  #editTransactionFormContainer button[type="button"] {
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    cursor: pointer;
+  }
+
+  #editTransactionFormContainer button[type="button"]:hover {
+    background-color: #bbb;
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    form {
+      flex-direction: column;
+    }
+
+    table th,
+    table td {
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    #editTransactionFormContainer form {
+      flex-direction: column;
+    }
+
+    #editTransactionFormContainer input[type="text"],
+    #editTransactionFormContainer input[type="date"] {
+      margin-bottom: 10px;
+    }
+  }
+
+</style>
+<body>
+
+<div th:replace="navigation_bar.html"></div>
+<div class="container">
+  <h1>Transaction List</h1>
+
+  <!-- Form for Adding Transactions -->
+  <form id="addTransactionForm" onsubmit="return addTransaction()">
+    <input type="text" id="description" placeholder="Description">
+    <input type="text" id="amount" placeholder="Amount" required>
+
+    <!--    <input type="text" id="transactionType" placeholder="Transaction Type">-->
+    <select id="transactionType">
+      <option value="INCOME">Income</option>
+      <option value="EXPENSE">Expense</option>
+    </select>
+    <input type="date" id="transactionDate" required>
+
+    <select id="categoryId">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            yId" name="categories">
+      <option value="" disabled selected>Select your Category</option>
+      <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
+    </select>
+    <button type="submit">Add Transaction</button>
+  </form>
+
+  <!-- Transaction List in Table Format -->
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Amount</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Date</th>
+      <th>Category Name</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody id="transactionList">
+    <!-- This will dynamically render the transactions when the page loads -->
+    <tr th:each="transaction : ${transactions}">
+      <td th:text="${transaction.transactionId}"></td>
+      <td th:text="${transaction.amount}"></td>
+      <td th:text="${transaction.transactionType}"></td>
+      <td th:text="${transaction.description}"></td>
+      <td th:text="${transaction.transactionDate}"></td>
+      <td>
+        <span th:each="category : ${categories}"
+              th:text="${category.categoryName}"
+              th:if="${category.categoryId} == ${transaction.categoryId}">
+        </span>
+      </td>
+      <td class="action-buttons">
+        <button th:attr="onclick='showEditForm(' + ${transaction.transactionId} + ', ' + ${transaction.amount} + ', \''
+                          + ${transaction.description} + '\', \'' + ${transaction.transactionDate} + '\', \'' + ${transaction.transactionType} + '\')'">Edit</button>
+        <button th:attr="onclick='deleteTransaction(' + ${transaction.transactionId} + ')'">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Edit Transaction Form -->
+  <div id="editTransactionFormContainer" style="display:none;">
+    <h2>Edit Transaction</h2>
+    <form id="editTransactionForm" onsubmit="return updateTransaction()">
+      <input type="hidden" id="editTransactionId">
+      <input type="text" id="editAmount" placeholder="Amount" required>
+      <input type="text" id="editDescription" placeholder="Description">
+      <!--    <input type="text" id="transactionType" placeholder="Transaction Type">-->
+      <select id="editTransactionType">
+        <option value="INCOME">Income</option>
+        <option value="EXPENSE">Expense</option>
+      </select>
+      <input type="date" id="editTransactionDate" required>
+      <select id="editCategoryId">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            yId" name="categories">
+        <option value="" disabled selected>Select your Category</option>
+        <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
+      </select>
+      <button type="submit" onclick="updateTransaction()">Update Transaction</button>
+      <button type="button" onclick="hideEditForm()">Cancel</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  const apiUrl = '/transactions';
+
+  function addTransaction() {
+    const amount = parseFloat(document.getElementById('amount').value);
+    const description = document.getElementById('description').value;
+    const transactionDate = document.getElementById('transactionDate').value;
+    const transactionType = document.getElementById('transactionType').value;
+    const categoryId = document.getElementById('categoryId').value;  // Get the selected categoryId from the dropdown
+     console.log("alert");
+    if (isNaN(amount)) {
+      alert('Amount must be a valid number.');
+      return false;
+    }
+
+    if (!categoryId) {
+      alert('Please select a category.');
+      return false;
+    }
+
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        amount: amount,
+        description: description,
+        transactionDate: transactionDate,
+        transactionType: transactionType,
+        categoryId: categoryId,  // Pass the category object with categoryId
+      })
+    })
+            .then(response => {
+              if (response.ok) {
+                location.reload();
+
+              } else {
+                alert('Failed to add transaction.');
+              }
+            });
+
+    return false; // Prevent the form from submitting the traditional way
+  }
+
+  function showEditForm(id, amount, description, transactionDate, transactionType,categoryId) {
+    document.getElementById('editTransactionId').value = id;
+    document.getElementById('editAmount').value = amount;
+    document.getElementById('editDescription').value = description;
+    document.getElementById('editTransactionDate').value = transactionDate;
+    document.getElementById('editTransactionType').value = transactionType;
+    document.getElementById('editCategoryId').value=categoryId ;
+    document.getElementById('editTransactionFormContainer').style.display = 'block';
+  }
+
+  function hideEditForm() {
+    document.getElementById('editTransactionFormContainer').style.display = 'none';
+  }
+
+  function updateTransaction() {
+    const id = document.getElementById('editTransactionId').value;
+    const amount = parseFloat(document.getElementById('editAmount').value);
+    const description = document.getElementById('editDescription').value;
+    const transactionDate = document.getElementById('editTransactionDate').value;
+    const transactionType = document.getElementById('editTransactionType').value;
+    const categoryId=document.getElementById('editCategoryId').value;
+
+    if (isNaN(amount)) {
+      alert('Amount must be a valid number.');
+      return false;
+    }
+
+    fetch(`${apiUrl}/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        amount: amount,
+        description: description,
+        transactionDate: transactionDate,
+        transactionType: transactionType,
+        categoryId: categoryId,
+      })
+    })
+            .then(response => {
+              if (response.ok) {
+                hideEditForm();
+                location.reload();
+              } else {
+                alert('Failed to update transaction.');
+              }
+            });
+
+    return false; // Prevent the form from submitting the traditional way
+  }
+
+  function deleteTransaction(id) {
+    fetch(`${apiUrl}/${id}`, {
+      method: 'DELETE'
+    }).then(() => location.reload());
+  }
+</script>
+</body>
+</html>

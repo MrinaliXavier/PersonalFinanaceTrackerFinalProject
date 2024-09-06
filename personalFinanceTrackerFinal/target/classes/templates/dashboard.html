@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>personalTransaction_Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        body{
+            background-image: linear-gradient(to left, #16e7c8, #a3db8b, #e4c87c, #ffb699, #ffb2c5);
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            padding: 20px;
+            /*background-image: linear-gradient(to right top, #f1a8a2, #d48f9c, #b27a95, #8c688b, #65577c, #575c86, #44628c, #296890, #0688af, #00a9c7, #00cbd8, #2cede1);*/
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 50px;
+            color: #333;
+        }
+
+        .dashboard-box {
+            display: inline-block;
+            width: 300px;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .dashboard-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-box h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .dashboard-box span {
+            display: block;
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .income-box {
+            background-color: #c8400f;
+            color: #fff;
+        }
+
+        .expense-box {
+            background-color: #77e85e;
+            color: #fff;
+        }
+
+        .balance-box {
+            background-color: #759adf;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="navigation_bar.html"></div>
+
+<div class="dashboard-container">
+    <h1>Dashboard</h1>
+
+    <div class="dashboard-box income-box">
+        <h3>Total Expenses</h3>
+        <span th:text="${dashboard.totalIncome}">$5,000</span>
+    </div>
+
+    <div class="dashboard-box expense-box">
+        <h3>Total Income</h3>
+        <span th:text="${dashboard.totalExpenses}">$2,500</span>
+    </div>
+
+    <div class="dashboard-box balance-box">
+        <h3>Final Balance</h3>
+        <span th:text="${dashboard.balance}">$2,500</span>
+    </div>
+</div>
+
+</body>
+</html>

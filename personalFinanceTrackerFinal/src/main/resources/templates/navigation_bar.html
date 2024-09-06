@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <title>navBar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<header>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <span style='font-size:50px;'>&#128221;</span>
+      <a class="navbar-brand">TrackWallet</a>
+    </div>
+    <ul class="nav navbar-nav">
+<!--      <li class="active"><a href="#">Home</a></li>-->
+        <li><a th:href="@{/home}">Home</a></li>
+        <li><a th:href="@{dashboard}">Dashboard</a></li>
+      <li><a th:href="@{transactions}">Transactions</a></li>
+      <li><a th:href="@{categories}">Categories</a></li>
+
+    </ul>
+  </div>
+</nav>
+</header>
+
+</body>
+</html>
